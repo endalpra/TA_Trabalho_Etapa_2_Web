@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="titulo">Manutenção de Alunos</ui:define>
+        <ui:define name="conteudo">
+            <h:form id="formListagem">
+                <h:panelGroup rendered="#{!controleAluno.editando}">
+                    <p:messages/>
+                    <p:commandButton value="Novo" icon="ui-icon-plus"
+                                     actionListener="#{controleAluno.novo()}"
+                                     update="formEdicao formListagem"/>
+                    <p:dataTable value="#{controleAluno.dao.listaObjetos}" var="obj"
+                                 reflow="true" paginator="true" id="listagem"
+                                 rows="4">
+                        <p:column headerText="ID">
+                            <p:outputLabel value="#{obj.id}"/>
+                        </p:column>
+                         <p:column headerText="Nome">
+                            <p:outputLabel value="#{obj.nome}"/>
+                        </p:column>
+                         <p:column headerText="Endereço">
+                             <p:outputLabel value="#{obj.endereco}"/>
+                        </p:column>
+                         <p:column headerText="Data Ingresso">
+                             <p:outputLabel value="#{obj.data_ingresso}"/>
+                        </p:column>
+                        <p:column headerText="Matrícula">
+                            <p:outputLabel value="#{obj.matricula}"/>
+                        </p:column>
+                         <p:column headerText="Pesquisa">
+                            <p:outputLabel value="#{obj.pesquisa.nome}"/>
+                        </p:column>
+                        <f:facet name="header">
+                            <p:panelGrid columns="7" styleClass="ui-panelgrid-blank"
+                                         layout="grid">
+                                
+                                <p:outputLabel value="Ordem: "/>
+                                <p:selectOneMenu value="#{controleAluno.dao.ordem}">
+                                    <f:selectItem itemLabel="ID" itemValue="id"/>
+                                    <f:selectItem itemLabel="Nome" itemValue="nome"/>
+                                    <f:selectItem itemLabel="Endereço" itemValue="endereco"/>
+                                    <f:selectItem itemLabel="Data Ingresso" itemValue="data_ingresso"/>
+                                    <f:selectItem itemLabel="Matrícula" itemValue="matricula"/>
+                                    <f:selectItem itemLabel="Pesquisa" itemValue="pesquisa.nome"/>
+                                    <p:ajax update="listagem"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel value="filtro"/>
+                                <p:inputText value="#{controleAluno.dao.filtro}"
+                                             size="20"/>
+                                <p:commandButton value="Filtrar" update="listagem"
+                                                 icon="ui-icon-search"/>
+                                <p:outputLabel value="Máximo de objetos: "/>
+                                <p:inputNumber value="#{controleAluno.dao.maximoObjetos}"
+                                               decimalPlaces="0" decimalSeparator=""
+                                               thousandSeparator="" size="5"/>
+                            </p:panelGrid>
+                        </f:facet>
+                        <f:facet name="footer">
+                            <p:outputLabel value="#{controleAluno.dao.mensagemNavegacao} &nbsp; &nbsp;"/>
+                            <p:commandButton action="#{controleAluno.dao.primeira()}"
+                                             icon="ui-icon-seek-first" title="Primeira página"
+                                             update="listagem"/>
+                            <p:commandButton action="#{controleAluno.dao.anterior()}"
+                                             icon="ui-icon-seek-prev" title="Anterior"
+                                             update="listagem"/>
+                            <p:commandButton action="#{controleAluno.dao.proximo()}"
+                                             icon="ui-icon-seek-next" title="Próximo"
+                                             update="listagem"/>
+                            <p:commandButton action="#{controleAluno.dao.ultimo()}"
+                                             icon="ui-icon-seek-end" title="Última página"
+                                             update="listagem"/>
+                        </f:facet>
+                        <p:column headerText="ID">
+                            <p:outputLabel value="#{obj.id}"/>
+                        </p:column>
+                        <p:column headerText="Nome">
+                            <p:outputLabel value="#{obj.nome}"/>
+                        </p:column>
+                        <p:column headerText="Endereço">
+                            <p:outputLabel value="#{obj.endereco}"/>
+                        </p:column>
+                        <p:column headerText="Data Ingresso">
+                            <p:outputLabel value="#{obj.data_ingresso}">
+                                <f:converter converterId="converterCalendar"/>
+                            </p:outputLabel>
+                        </p:column>
+                        <p:column headerText="Matrícula">
+                            <p:outputLabel value="#{obj.matricula}"/>
+                        </p:column>
+                        <p:column headerText="Pesquisa">
+                            <p:outputLabel value="#{obj.pesquisa.nome}"/>
+                        </p:column>
+                        <p:column headerText="Ações">
+                            <div align="center">
+                                <p:commandButton icon="ui-icon-pencil"
+                                                 actionListener="#{controleAluno.alterar(obj.id)}"
+                                                 process="@form"
+                                                 update=":formEdicao formListagem"/>
+                                <p:commandButton icon="ui-icon-trash"
+                                                 actionListener="#{controleAluno.remover(obj.id)}"
+                                                 process="@form" update=":formListagem"/>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:form>
+            <ui:include src="/privado/aluno/formulario.xhtml"/>
+        </ui:define>
+    </ui:composition>
+</html>
+

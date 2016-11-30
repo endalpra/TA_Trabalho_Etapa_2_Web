@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:form id="formEdicao">
+        <h:panelGroup rendered="#{controleAluno.editando}">
+            <div class="ui-fluid">
+                <p:messages/>
+                <p:panelGrid columns="2" columnClasses="ui-grid-col-2, ui-grid-col-20"
+                             layout="grid" styleClass="ui-panelgrid-blank">
+                    <f:facet name="header">
+                        <p:outputLabel value="Edição de Alunos"/>
+                    </f:facet>
+                    <p:outputLabel for="txtID" value="ID"/>
+                    <p:inputText id="txtID" value="#{controleAluno.objeto.id}" readonly="true"
+                                 size="10"/>
+                    <p:outputLabel for="txtNome" value="Nome"/>
+                    <p:inputText id="txtNome" value="#{controleAluno.objeto.nome}"
+                                 size="40" maxlength="40"
+                                 required="true"
+                                 placeholder="Obrigatório"/>
+                    <p:outputLabel for="txtEndereco" value="Endereço"/>
+                    <p:inputText id="txtUsuario" value="#{controleAluno.objeto.endereco}"
+                                 size="40" maxlength="40"
+                                 required="true"
+                                 placeholder="Obrigatório"/>
+                    <p:outputLabel for="txtData_ingresso" value="Data Ingresso"/>
+                    <p:calendar id="txtNascimento" value="#{controleAluno.objeto.data_ingresso}"
+                                mask="true" pattern="dd/MM/yyyy"
+                                placeholder="Obrigatório"
+                                required="true"
+                                requiredMessage="A data deve ser informada"
+                                navigator="true">
+                        <f:converter converterId="converterCalendar"/>
+                    </p:calendar>
+                    <p:outputLabel value="Pesquisa" for="selectPesquisa"/>
+                    <p:selectOneMenu value="#{controleAluno.objeto.pesquisa}"
+                                     id="selectPesquisa">
+                        <f:selectItem itemLabel="Selecione um registro"
+                                      noSelectionOption="true"/>
+                        <f:selectItems value="#{controleAluno.daoPesquisa.listaTodos}"
+                                       var="s" itemLabel="#{s.nome}"/>
+                        <f:converter converterId="converterPesquisa"/>
+                    </p:selectOneMenu>
+                    <p:commandButton value="Salvar" icon="ui-icon-disk"
+                                     actionListener="#{controleAluno.salvar()}"
+                                     update="formEdicao :formListagem"/>
+                </p:panelGrid>
+            
+                <h:panelGroup id="painelDisciplina">
+                    <p:panelGrid columns="2" columnClasses="ui-grid-col-2, ui-grid-col-20"
+                                 layout="grid" styleClass="ui-panelgrid-blank" rendered="#{controleAluno.editandoDisciplina}">
+                        <f:facet name="header">
+                            <p:outputLabel value="Edição de disciplina"/>
+                        </f:facet>
+                        <p:outputLabel value="Disciplina" for="selectDisciplina"/>
+                        <p:selectOneMenu id="selectDisciplina" value="#{controleAluno.disciplina}">
+                            <f:converter converterId="converterDisciplina"/>
+                            <f:selectItem itemLabel="Selecione um registro"
+                                          noSelectionOption="true"/>
+                            <f:selectItems value="#{controleAluno.daoDisciplina.listaTodos}"
+                                           var="d"
+                                           itemLabel="#{d.nome}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value=""/>
+                        <p:commandButton value="Salvar Disciplina"
+                                         icon="ui-icon-disk"
+                                         actionListener="#{controleAluno.salvarDisciplina()}"
+                                         update="formEdicao"
+                                         id="btnSalvarDisciplina"/>
+                    </p:panelGrid>
+                </h:panelGroup>
+            </div>
+            <h:panelGroup id="listagemDisciplinas">
+                <h:panelGroup rendered="#{!controleAluno.editandoDisciplina}">
+                    <p:commandButton value="Nova Disciplina"
+                                     icon="ui-icon-plus"
+                                     actionListener="#{controleAluno.novaDisciplina()}"
+                                     update="@form"
+                                     id="btNovaDisciplina"/>
+                    <p:dataTable value="#{controleAluno.objeto.disciplinas}"
+                                 var="dis" reflow="true">
+                        <f:facet name="header">
+                            <p:outputLabel value="Disciplinas"/>
+                        </f:facet>
+                        <p:column headerText="Nome">
+                            <p:outputLabel value="#{dis.nome}"/>
+                        </p:column>
+                        <p:column headerText="Créditos">
+                            <p:outputLabel value="#{dis.creditos}"/>
+                        </p:column>
+                        <p:column headerText="Ações">
+                            <div align="center">
+                                <p:commandButton icon="ui-icon-trash"
+                                                 action="#{controleAluno.removerDisciplina(dis)}"
+                                                 process="@this"
+                                                 update="@form"/>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:panelGroup>
+        </h:panelGroup>
+    </h:form>
+</html>
+
