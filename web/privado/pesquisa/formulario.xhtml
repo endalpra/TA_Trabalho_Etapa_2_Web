@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:form id="formEdicao">
+        <h:panelGroup rendered="#{controlePesquisa.editando}">
+            <div class="ui-fluid">
+                <p:messages/>
+                <p:panelGrid columns="2" columnClasses="ui-grid-col-2, ui-grid-col-20"
+                             layout="grid" styleClass="ui-panelgrid-blank">
+                    <f:facet name="header">
+                        <p:outputLabel value="Edição de Pesquisas"/>
+                    </f:facet>
+                    <p:outputLabel for="txtID" value="ID"/>
+                    <p:inputText id="txtID" value="#{controlePesquisa.objeto.id}" readonly="true"
+                                 size="10"/>
+                    <p:outputLabel for="txtNome" value="Nome"/>
+                    <p:inputText id="txtNome" value="#{controlePesquisa.objeto.nome}"
+                                 size="40" maxlength="40"
+                                 required="true"
+                                 placeholder="Obrigatório"/>
+                    <p:outputLabel for="txtData_inicio" value="Data Início"/>
+                    <p:calendar id="txtData_inicio" value="#{controlePesquisa.objeto.data_inicio}"
+                                mask="true" pattern="dd/MM/yyyy"
+                                placeholder="Obrigatório"
+                                required="true"
+                                requiredMessage="A data deve ser informada"
+                                navigator="true">
+                        <f:converter converterId="converterCalendar"/>
+                    </p:calendar>
+                    <p:outputLabel for="txtData_termino" value="Data Término"/>
+                    <p:calendar id="txtData_termino" value="#{controlePesquisa.objeto.data_termino}"
+                                mask="true" pattern="dd/MM/yyyy"
+                                placeholder="Obrigatório"
+                                required="true"
+                                requiredMessage="A data deve ser informada"
+                                navigator="true">
+                        <f:converter converterId="converterCalendar"/>
+                    </p:calendar>
+                    <p:commandButton value="Salvar" icon="ui-icon-disk"
+                                     actionListener="#{controlePesquisa.salvar()}"
+                                     update="formEdicao :formListagem"/>
+                </p:panelGrid>
+
+                <h:panelGroup id="painelAluno">
+                    <p:panelGrid columns="2" columnClasses="ui-grid-col-2, ui-grid-col-20"
+                                 layout="grid" styleClass="ui-panelgrid-blank" rendered="#{controlePesquisa.editandoAluno}">
+                        <f:facet name="header">
+                            <p:outputLabel value="Edição de aluno"/>
+                        </f:facet>
+                        <p:outputLabel value="Aluno" for="selectAluno"/>
+                        <p:selectOneMenu id="selectAluno" value="#{controlePesquisa.aluno}">
+                            <f:converter converterId="converterAluno"/>
+                            <f:selectItem itemLabel="Selecione um registro"
+                                          noSelectionOption="true"/>
+                            <f:selectItems value="#{controlePesquisa.daoAluno.listaTodos}"
+                                           var="a"
+                                           itemLabel="#{a.nome}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value=""/>
+                        <p:commandButton value="Salvar Aluno"
+                                         icon="ui-icon-disk"
+                                         actionListener="#{controlePesquisa.salvarAluno()}"
+                                         update="formEdicao"
+                                         id="btnSalvarAluno"/>
+                    </p:panelGrid>
+                </h:panelGroup>
+                <h:panelGroup id="painelProfessor">
+                    <p:panelGrid columns="2" columnClasses="ui-grid-col-2, ui-grid-col-20"
+                                 layout="grid" styleClass="ui-panelgrid-blank" rendered="#{controlePesquisa.editandoProfessor}">
+                        <f:facet name="header">
+                            <p:outputLabel value="Edição de professor"/>
+                        </f:facet>
+                        <p:outputLabel value="Professor" for="selectProfessor"/>
+                        <p:selectOneMenu id="selectProfessor" value="#{controlePesquisa.professor}">
+                            <f:converter converterId="converterProfessor"/>
+                            <f:selectItem itemLabel="Selecione um registro"
+                                          noSelectionOption="true"/>
+                            <f:selectItems value="#{controlePesquisa.daoProfessor.listaTodos}"
+                                           var="p"
+                                           itemLabel="#{p.nome}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value=""/>
+                        <p:commandButton value="Salvar Professor"
+                                         icon="ui-icon-disk"
+                                         actionListener="#{controlePesquisa.salvarProfessor()}"
+                                         update="formEdicao"
+                                         id="btnSalvarProfessor"/>
+                    </p:panelGrid>
+                </h:panelGroup>
+            </div>
+            <h:panelGroup id="listagemAlunos">
+                <h:panelGroup rendered="#{!controlePesquisa.editandoAluno}">
+                    <p:commandButton value="Novo Aluno"
+                                     icon="ui-icon-plus"
+                                     actionListener="#{controlePesquisa.novoAluno()}"
+                                     update="@form"
+                                     id="btNovoAluno"/>
+                    <p:dataTable value="#{controlePesquisa.objeto.alunos}"
+                                 var="al" reflow="true">
+                        <f:facet name="header">
+                            <p:outputLabel value="Alunos"/>
+                        </f:facet>
+                        <p:column headerText="Nome">
+                            <p:outputLabel value="#{al.nome}">
+                            </p:outputLabel>                            
+                        </p:column>
+                        <p:column headerText="Matrícula">
+                            <p:outputLabel value="#{al.matricula}">
+                            </p:outputLabel>
+                        </p:column>
+                        <p:column headerText="Ações">
+                            <div align="center">
+                                <p:commandButton icon="ui-icon-trash"
+                                                 action="#{controlePesquisa.removerAluno(al)}"
+                                                 process="@this"
+                                                 update="@form"/>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:panelGroup>
+            <h:panelGroup id="listagemProfessores">
+                <h:panelGroup rendered="#{!controlePesquisa.editandoProfessor}">
+                    <p:commandButton value="Novo Professor"
+                                     icon="ui-icon-plus"
+                                     actionListener="#{controlePesquisa.novoProfessor()}"
+                                     update="@form"
+                                     id="btNovoProfessor"/>
+                    <p:dataTable value="#{controlePesquisa.objeto.professores}"
+                                 var="pr" reflow="true">
+                        <f:facet name="header">
+                            <p:outputLabel value="Professores"/>
+                        </f:facet>
+                        <p:column headerText="Nome">
+                            <p:outputLabel value="#{pr.nome}">
+                            </p:outputLabel>                            
+                        </p:column>
+                        <p:column headerText="Carga Horária">
+                            <p:outputLabel value="#{pr.carga_horaria}">
+                            </p:outputLabel>
+                        </p:column>
+                        <p:column headerText="Ações">
+                            <div align="center">
+                                <p:commandButton icon="ui-icon-trash"
+                                                 action="#{controlePesquisa.removerProfessor(pr)}"
+                                                 process="@this"
+                                                 update="@form"/>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+            </h:panelGroup>
+        </h:panelGroup>
+    </h:form>
+</html>
+

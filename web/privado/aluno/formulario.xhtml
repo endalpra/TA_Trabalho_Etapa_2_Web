@@ -22,12 +22,17 @@
                                  required="true"
                                  placeholder="Obrigatório"/>
                     <p:outputLabel for="txtEndereco" value="Endereço"/>
-                    <p:inputText id="txtUsuario" value="#{controleAluno.objeto.endereco}"
+                    <p:inputText id="txtEndereco" value="#{controleAluno.objeto.endereco}"
+                                 size="40" maxlength="40"
+                                 required="true"
+                                 placeholder="Obrigatório"/>
+                     <p:outputLabel for="txtMatricula" value="Matrícula"/>
+                     <p:inputText id="txtMatricula" value="#{controleAluno.objeto.matricula}"
                                  size="40" maxlength="40"
                                  required="true"
                                  placeholder="Obrigatório"/>
                     <p:outputLabel for="txtData_ingresso" value="Data Ingresso"/>
-                    <p:calendar id="txtNascimento" value="#{controleAluno.objeto.data_ingresso}"
+                    <p:calendar id="txtData_ingresso" value="#{controleAluno.objeto.data_ingresso}"
                                 mask="true" pattern="dd/MM/yyyy"
                                 placeholder="Obrigatório"
                                 required="true"

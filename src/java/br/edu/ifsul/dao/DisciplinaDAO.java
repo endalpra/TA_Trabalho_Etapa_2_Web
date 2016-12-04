@@ -17,8 +17,16 @@ public class DisciplinaDAO<T> extends DAOGenerico<Disciplina> implements Seriali
         super.setOrdem("nome");
     }
     
-     public T getObjectById(String id) throws Exception{
-        return (T) super.getEm().find(super.getClassePersistente(), id);
+//     public T getObjectById(String id) throws Exception{
+//        return (T) super.getEm().find(super.getClassePersistente(), id);
+//    }
+     
+     @Override
+    public Disciplina getObjectById(Integer id) throws Exception {
+        Disciplina obj
+                = (Disciplina) super.getEm().find(super.getClassePersistente(), id);
+        //obj.getDisciplinas().size();
+        return obj;
     }
     
     @Override

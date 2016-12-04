@@ -1,5 +1,6 @@
 package br.edu.ifsul.converter;
-import br.edu.ifsul.modelo.Disciplina;
+
+import br.edu.ifsul.modelo.Professor;
 import java.io.Serializable;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -12,8 +13,8 @@ import javax.persistence.PersistenceContext;
  *
  * @author Érico
  */
-@FacesConverter(value="converterDisciplina")
-public class ConverterDisciplina implements Serializable, Converter{
+@FacesConverter(value="converterProfessor")
+public class ConverterProfessor implements Serializable, Converter{
 
     @PersistenceContext(unitName = "TA_Trabalho_Etapa_2_WebPU")
     private EntityManager em;
@@ -23,7 +24,7 @@ public class ConverterDisciplina implements Serializable, Converter{
         if(string==null || string.equals("Selecione um registro")){
             return null;
         }
-        return em.find(Disciplina.class,Integer.parseInt(string));
+        return em.find(Professor.class, Integer.parseInt(string));
     }
 
     @Override
@@ -31,10 +32,7 @@ public class ConverterDisciplina implements Serializable, Converter{
         if(o==null){
             return null;
         }
-//        Disciplina obj = (Disciplina) o;
-//        return obj.getNome();
- 
-        Disciplina obj = (Disciplina) o;
+        Professor obj = (Professor) o;
         return obj.getId().toString();
     }
 

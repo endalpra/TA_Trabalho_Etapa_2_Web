@@ -12,12 +12,20 @@
             <h:form id="formMenu">
                 <b:navBar brand="IFSUL">
                     <b:navbarLinks>
-                        <b:navLink value="Inicio" outcome="inicio" />
+                        <!--<b:navLink value="Inicio" outcome="inicio" />-->
                         <b:dropMenu value="Cadastros">
                             <b:navCommandLink value="Alunos"
                                               ajax="false"
                                               action="#{controleAluno.listar()}"/>
-                           
+                            <b:navCommandLink value="Professores"
+                                              ajax="false"
+                                              action="#{controleProfessor.listar()}"/>
+                            <b:navCommandLink value="Disciplinas"
+                                              ajax="false"
+                                              action="#{controleDisciplina.listar()}"/>
+                              <b:navCommandLink value="Pesquisas"
+                                              ajax="false"
+                                              action="#{controlePesquisa.listar()}"/>                           
                         </b:dropMenu>
                     </b:navbarLinks>
                 </b:navBar>
